@@ -29,15 +29,62 @@ const sphere = new THREE.Mesh(
     new THREE.MeshStandardMaterial({ roughness: 0.7 })
 )
 sphere.position.y = 1
-scene.add(sphere)
+// scene.add(sphere)
+
+// waterfall
+
+const waterFall=new THREE.Mesh(
+    new THREE.BoxGeometry(6,9,0),
+    new THREE.MeshStandardMaterial()
+)
+const waterFallFolder=gui.addFolder('waterfall')
+waterFallFolder.add(waterFall.position,'x')
+waterFallFolder.add(waterFall.position,'y')
+waterFallFolder.add(waterFall.position,'z')
+// const waterFallFolderSize=gui.addFolder('waterfall size')
+// waterFallFolderSize.add(waterFall,'x')
+// waterFallFolderSize.add(waterFall,'y')
+// waterFallFolderSize.add(waterFall,'z')
+scene.add(waterFall)
+
+
+// waterfallWater
+
+const waterFallWater=new THREE.Mesh(
+    new THREE.PlaneGeometry(3,5,1),
+    new THREE.MeshStandardMaterial
+)
+waterFallWater.position.y=2
+waterFallWater.position.z=.001
+// debug add
+
+scene.add(waterFallWater)
+
+
+// icoshearon
+const icos=new THREE.Mesh(
+    new THREE.IcosahedronGeometry(),
+    new THREE.MeshStandardMaterial({color:'#049ef4'})
+    )
+icos.position.y=2
+icos.position.z=3
+    scene.add(icos)
+    const icosFolder=gui.addFolder('Icos Debugger')
+    icosFolder.add(icos.rotation,'x').min(-10).max(10).step(.5)
+    icosFolder.add(icos.rotation,'y').min(-10).max(10).step(.5)
+    icosFolder.add(icos.rotation,'z').min(-10).max(10).step(.5)
+    icosFolder.add(icos.position,'x').min(-10).max(10).step(.5)
+    icosFolder.add(icos.position,'y').min(-10).max(10).step(.5)
+    icosFolder.add(icos.position,'z').min(-10).max(10).step(.5)
+
 
 // Floor
 const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(20, 20),
+    new THREE.PlaneGeometry(6, 10),
     new THREE.MeshStandardMaterial({ color: '#a9c388' })
 )
 floor.rotation.x = - Math.PI * 0.5
-floor.position.y = 0
+floor.position.z = 4
 scene.add(floor)
 
 /**
@@ -45,18 +92,23 @@ scene.add(floor)
  */
 // Ambient light
 const ambientLight = new THREE.AmbientLight('#ffffff', 0.5)
-gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
+// gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
 scene.add(ambientLight)
 
 // Directional light
 const moonLight = new THREE.DirectionalLight('#ffffff', 0.5)
-moonLight.position.set(4, 5, - 2)
-gui.add(moonLight, 'intensity').min(0).max(1).step(0.001)
-gui.add(moonLight.position, 'x').min(- 5).max(5).step(0.001)
-gui.add(moonLight.position, 'y').min(- 5).max(5).step(0.001)
-gui.add(moonLight.position, 'z').min(- 5).max(5).step(0.001)
+moonLight.position.set(0, 2, 5)
+// debug
+const lightFolder=gui.addFolder('lightFolder')
+lightFolder.add(moonLight, 'intensity').min(0).max(1).step(0.001)
+lightFolder.add(moonLight.position, 'x').min(- 5).max(5).step(0.001)
+lightFolder.add(moonLight.position, 'y').min(- 5).max(5).step(0.001)
+lightFolder.add(moonLight.position, 'z').min(- 5).max(5).step(0.001)
 scene.add(moonLight)
 
+// general light
+// const light = new THREE.AmbientLight( 0x404040 ,2); // soft white light
+// scene.add( light );
 /**
  * Sizes
  */
@@ -85,9 +137,14 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 4
+camera.position.x = 0
 camera.position.y = 2
-camera.position.z = 5
+camera.position.z = 10
+
+const camFolder=gui.addFolder('Cam')
+camFolder.add(camera.position,'x').min(- 15).max(15).step(1)
+camFolder.add(camera.position,'y').min(- 15).max(15).step(1)
+camFolder.add(camera.position,'z').min(- 15).max(15).step(1)
 scene.add(camera)
 
 // Controls
@@ -111,6 +168,11 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+
+    icos.rotation.y= 0.2 * elapsedTime
+    icos.rotation.x= 0.4 * elapsedTime
+
+    
 
     // Update controls
     controls.update()
