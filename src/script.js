@@ -19,6 +19,9 @@ const scene = new THREE.Scene()
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
+const bricksColorTexture = textureLoader.load('/textures/bricks/color.jpg')
+const testTexture=textureLoader.load('/textures/test_textures/coast_sand_rocks_02_diff_4k.jpg')
+
 
 /**
  * House
@@ -33,9 +36,12 @@ sphere.position.y = 1
 
 // waterfall
 
+
 const waterFall=new THREE.Mesh(
     new THREE.BoxGeometry(6,9,0),
-    new THREE.MeshStandardMaterial()
+    new THREE.MeshStandardMaterial({
+        map:testTexture
+        })
 )
 const waterFallFolder=gui.addFolder('waterfall')
 waterFallFolder.add(waterFall.position,'x')
@@ -64,7 +70,9 @@ scene.add(waterFallWater)
 // icoshearon
 const icos=new THREE.Mesh(
     new THREE.IcosahedronGeometry(),
-    new THREE.MeshStandardMaterial({color:'#049ef4'})
+    new THREE.MeshStandardMaterial({
+      
+    })
     )
 icos.position.y=2
 icos.position.z=3
@@ -81,7 +89,7 @@ icos.position.z=3
 // Floor
 const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(6, 10),
-    new THREE.MeshStandardMaterial({ color: '#a9c388' })
+    new THREE.MeshStandardMaterial({   map:testTexture})
 )
 floor.rotation.x = - Math.PI * 0.5
 floor.position.z = 4
@@ -171,6 +179,7 @@ const tick = () =>
 
     icos.rotation.y= 0.2 * elapsedTime
     icos.rotation.x= 0.4 * elapsedTime
+    icos.rotation.z= 0.2 * elapsedTime
 
     
 
