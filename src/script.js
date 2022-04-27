@@ -21,7 +21,13 @@ const scene = new THREE.Scene()
 const textureLoader = new THREE.TextureLoader()
 const bricksColorTexture = textureLoader.load('/textures/bricks/color.jpg')
 const testTexture=textureLoader.load('/textures/test_textures/coast_sand_rocks_02_diff_4k.jpg')
-
+// icos
+const icosColor=textureLoader.load('/textures/IcoshedronTexture/Bark_007_BaseColor.jpg')
+const icosAO=textureLoader.load('/textures/IcoshedronTexture/Bark_007_AmbientOcclusion.jpg')
+const icosNormal=textureLoader.load('/textures/IcoshedronTexture/Bark_007_Normal.jpg')
+const icosRoughness=textureLoader.load('/textures/IcoshedronTexture/Bark_007_Roughness.jpg')
+// const icosDisp=textureLoader.load('/textures/IcoshedronTexture/metal_plate_disp_2k.jpg')
+// const icosMetal=textureLoader.load('/textures/IcoshedronTexture/metal_plate_metal_2k.jpg')
 
 /**
  * House
@@ -64,19 +70,26 @@ waterFallWater.position.y=2
 waterFallWater.position.z=.001
 // debug add
 
-scene.add(waterFallWater)
+// scene.add(waterFallWater)
 
 
 // icoshearon
 const icos=new THREE.Mesh(
     new THREE.IcosahedronGeometry(),
     new THREE.MeshStandardMaterial({
-      
+        map:icosColor,
+      transparent:true,
+        aoMap:icosAO,
+      normalMap:icosNormal,
+      roughnessMap:icosRoughness,
+    //   metalnessMap:icosMetal,
+    //   displacementMap:icosDisp
     })
     )
+    icos.geometry.setAttribute('uv2', new THREE.Float32BufferAttribute(icos.geometry.attributes.uv.array, 2))
 icos.position.y=2
 icos.position.z=3
-    scene.add(icos)
+    // scene.add(icos)
     const icosFolder=gui.addFolder('Icos Debugger')
     icosFolder.add(icos.rotation,'x').min(-10).max(10).step(.5)
     icosFolder.add(icos.rotation,'y').min(-10).max(10).step(.5)
@@ -85,6 +98,13 @@ icos.position.z=3
     icosFolder.add(icos.position,'y').min(-10).max(10).step(.5)
     icosFolder.add(icos.position,'z').min(-10).max(10).step(.5)
 
+// TREE
+const tree=new THREE.Mesh(
+    new THREE.CylinderGeometry(1,1,1,32),
+    new THREE.MeshStandardMaterial()
+)
+tree.position.z=4
+scene.add(tree)
 
 // Floor
 const floor = new THREE.Mesh(
@@ -93,7 +113,7 @@ const floor = new THREE.Mesh(
 )
 floor.rotation.x = - Math.PI * 0.5
 floor.position.z = 4
-scene.add(floor)
+// scene.add(floor)
 
 /**
  * Lights
